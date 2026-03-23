@@ -1,0 +1,52 @@
+{
+  "entities": {
+    "GameState": {
+      "title": "GameState",
+      "description": "The current state of the game for a specific user.",
+      "type": "object",
+      "properties": {
+        "stars": { "type": "number", "description": "Total stars earned." },
+        "completedChallenges": { "type": "array", "items": { "type": "number" }, "description": "IDs of completed challenges." },
+        "activeView": { "type": "string", "description": "The current view the user is on." },
+        "currentMissionId": { "type": "number", "description": "The ID of the current mission." },
+        "currentChallengeIndex": { "type": "number", "description": "The index of the current challenge in the mission." },
+        "lastFeedback": {
+          "type": "object",
+          "properties": {
+            "correct": { "type": "boolean" },
+            "text": { "type": "string" }
+          }
+        },
+        "voiceMode": { "type": "string", "enum": ["normal", "infantil"], "description": "The voice mode selected." },
+        "guidedMode": { "type": "boolean", "description": "Whether guided mode is active." },
+        "currentSentenceIndex": { "type": "number", "description": "The index of the current sentence." },
+        "discoveredPatterns": { "type": "array", "items": { "type": "string" }, "description": "List of discovered phonetic patterns." },
+        "lastUnlockedMissions": { "type": "array", "items": { "type": "number" }, "description": "List of unlocked mission IDs." },
+        "performanceScore": { "type": "number", "description": "The user's performance score for adaptive difficulty." },
+        "patternErrors": { "type": "object", "additionalProperties": { "type": "number" }, "description": "Error counts per pattern." },
+        "reviewPattern": { "type": ["string", "null"], "description": "The pattern currently being reviewed." },
+        "difficultyLevel": { "type": "number", "description": "The current difficulty level (1-3)." },
+        "streak": { "type": "number", "description": "The current streak of correct answers." },
+        "lastAnswerTime": { "type": "number", "description": "The timestamp of the last answer." },
+        "patternStats": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "correct": { "type": "number" },
+              "total": { "type": "number" }
+            }
+          },
+          "description": "Statistics for each pattern."
+        }
+      },
+      "required": ["stars", "completedChallenges", "activeView", "currentMissionId", "currentChallengeIndex", "lastFeedback", "voiceMode", "guidedMode", "currentSentenceIndex", "discoveredPatterns", "lastUnlockedMissions", "performanceScore", "patternErrors", "difficultyLevel", "streak", "lastAnswerTime", "patternStats"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/GameState" },
+      "description": "Stores the game state for each user."
+    }
+  }
+}
